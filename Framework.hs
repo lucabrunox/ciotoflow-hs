@@ -2,8 +2,7 @@
 
 module Framework where
 
-import Text.Blaze.Html5 hiding (map)
-import Text.Blaze.Html5.Attributes
+import Text.Blaze.Html5 (Html)
 import GHCJS.DOM
 import GHCJS.DOM.DOMWindow
 import GHCJS.DOM.Document
@@ -20,25 +19,25 @@ import Control.Monad.ListM
 
 import DOMUtils
 
-type Handler a = IO a -> IO ()
+type Step a = IO a -> IO ()
 
-handler :: Application a -> Handler a
-handler app h = do
+step :: Application a -> Step a
+step app h = do
   page <- h
-  let html = renderApplication app page
+  let html = renderPage app page
   setPageHtml html
-  setupApplication app (handler app) page
+  setupPage app (step app) page
 
 data Application a = Application { homePage :: a,
-                                   renderApplication :: a -> Html,
-                                   setupApplication :: Handler a -> a -> IO () }
+                                   renderPage :: a -> Html,
+                                   setupPage :: Step a -> a -> IO () }
 
 runApplication :: Application a -> IO ()
 runApplication app = do
   let home = homePage app
-  let html = renderApplication app home
+  let html = renderPage app home
   setPageHtml html
-  setupApplication app (handler app) home
+  setupPage app (step app) home
 
 setPageHtml :: Html -> IO ()
 setPageHtml html = do

@@ -1,4 +1,4 @@
-{-# LANGUAGE JavaScriptFFI, CPP, RankNTypes #-}
+{-# LANGUAGE RankNTypes #-}
 
 module Main where
 
@@ -23,7 +23,7 @@ import Control.Monad.ListM
 import PageRender
 import Utils
 import DOMUtils
-import Framework
+import Framework hiding (renderPage, setupPage)
 import PageRender
 import PageActions
 

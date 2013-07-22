@@ -1,0 +1,51 @@
+
+@font-face
+{
+  font-family: 'FixedsysExcelsior301Regular';
+  src: url('../fonts/fsex300.eot');
+  src: url('../fonts/fsex300.eot?#iefix') format('embedded-opentype'),
+  url('../fonts/fsex300.woff') format('woff'),
+  url('../fonts/fsex300.ttf') format('truetype'),
+  url('../fonts/fsex300.svg#FixedsysExcelsior301Regular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body
+{
+  background-color: #000000;
+  color: #00ff00;
+}
+
+.lh15
+{
+  line-height: 15px;
+}
+
+.term
+{
+  font-family: FixedsysExcelsior301Regular,fixedsys,"Courier New",courier,fixed,monospace;
+  font-size: 15px;
+  letter-spacing: 1px;
+  background-color: #000000;
+  color: #00ff00;
+}
+.term .termReverse
+{
+  color: #00ff00;
+  background: #00ff00;
+}
+
+tt
+{
+  font-family: courier,fixed,monospace;
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 15px;
+}
+
+.dimmed,.dimmed *,.dimmed * *
+{
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}

@@ -30,3 +30,8 @@ replaceChildren htmlElem rep = do
   let node = castToNode htmlElem
   children <- nodeGetChildList rep
   mapM_ (nodeAppendChild node . Just) children
+
+alert t = do
+  window <- currentWindow
+  maybeDo_ window $ \w -> 
+    domWindowAlert w t

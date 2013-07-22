@@ -1,0 +1,59 @@
+body
+{
+  font-family: monospace;
+  font-size: 12px;
+  background-color: #000000;
+  color: #cccccc;
+}
+
+table
+{
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin: 0;
+  padding: 0;
+}
+
+td
+{
+  font-family: monospace;
+  font-size: 12px;
+  margin: 0;
+  padding: 0;
+  vertical-align: top;
+}
+
+a
+{
+  color: #ffffff;
+}
+
+a:visited
+{
+  color: #ffffff;
+}
+
+a:active
+{
+  color: #ffffff;
+}
+
+.situescion > .when
+{
+  margin-left: 10px;
+}
+
+.situescion > .where
+{
+  margin-left: 55px;
+}
+
+.situescion > .title
+{
+  margin-left: 80px;
+}
+
+.situescion > .desc
+{ 
+  margin-left: 110px;
+}

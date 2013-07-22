@@ -1,0 +1,108 @@
+body
+{
+  background-color: #c91c22;
+  font-size: 12px;
+  color: #FFFFFF;
+}
+.wrapper 
+{ 
+  padding-left: 15%;
+  padding-right: 15%;
+}
+
+
+.situescion > .when
+{
+  margin-left: 10px;
+}
+
+.situescion > .where
+{
+  margin-left: 55px;
+}
+
+.situescion > .title
+{
+  margin-left: 80px;
+}
+
+.situescion > .desc
+{ 
+  margin-left: 110px;
+}
+
+.header 
+{ 
+  text-align: center;
+
+}
+
+.paragrafi
+ { 
+   background-color: #d9262c;
+   font-size: 26px;
+   font-family: Rockwell, Palatino, serif;
+   padding: 20px;
+   margin: 20px;
+ }
+.paragrafi div:odd 
+{ 
+  margin: 5px;
+  text-align: left;
+}
+.paragrafi div:even
+{ 
+  margin: 5px;
+  text-align: right;
+}
+.paragrafi:first-letter
+{ 
+  text-transform: uppercase;
+}
+.paragrafi em
+{ 
+  color: yellow;
+  text-decoration: none;
+  font-style: normal;
+}
+.paragrafi h
+{ 
+  color: yellow;
+  font-style: bold;
+  font-size: 30px;
+}
+.sottomenu
+ { 
+  text-align: center;
+  margin: 10px;
+ }
+.sottomenu a{ 
+  font-size: 16px;
+  text-decoration: none;
+  margin: 2px;
+}
+.sottomenu a:hover { 
+  text-decoration: none;
+  border-bottom: 1px white dotted;
+}
+
+.sottomenu a:active { 
+  text-decoration: none;
+  font-size: 18px;
+  border-bottom: 1px white dotted;
+}
+
+.titolo
+{ 
+  font-size: 39px;
+  text-align: center;
+}
+.orario 
+{ 
+  font-size: 14px;
+}
+.orario div, .orario a
+{ 
+  color: black;
+  font-size: 30px;
+}
