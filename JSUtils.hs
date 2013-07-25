@@ -3,7 +3,7 @@
 module JSUtils where
 
 import GHCJS.Types
-import GHCJS.DOM.Types (Element(..))
+import GHCJS.DOM.Types
 import GHCJS.Foreign
 
 #ifdef __GHCJS__

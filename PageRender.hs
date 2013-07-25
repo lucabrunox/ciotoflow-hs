@@ -9,12 +9,20 @@ import qualified Text.Blaze.Html4.Transitional as H
 import qualified Text.Blaze.Html4.Transitional.Attributes as A
 import BlazeUtils hiding (link)
 import qualified BlazeUtils as A
-import Data.Text.Internal (Text)
+import Data.Text hiding (head)
+import Text.Blaze.Internal
 
-default (Data.Text.Internal.Text)
+default (Data.Text.Text)
     
 data Page = HomePage | HumanHomePage | NerdHomePage
  deriving (Show)
+
+pageUrl :: Page -> String
+pageUrl HomePage = "#"
+pageUrl HumanHomePage = "#human"
+pageUrl NerdHomePage = "#nerd"
+
+url = textValue . pack . pageUrl
 
 renderPage :: Page -> Html
 renderPage HomePage = do
@@ -28,9 +36,9 @@ renderPage HomePage = do
     div ! align "center" $ do
       h1 "CiotoFlow"
       p "*** Let the _CIOTIA_ flows out! ***"
-      a ! href "#" ! class_ "human" $ do
+      a ! href (url HumanHomePage) ! class_ "human" $ do
         img ! src "images/human_side.png"
-      a ! href "#" ! class_ "nerd" $ do
+      a ! href (url NerdHomePage) ! class_ "nerd" $ do
         img ! src "images/robot_side.png"
       br
       br
@@ -58,7 +66,7 @@ renderPage HumanHomePage = do
             div ! align "center" $ do
               h1 $ "Incontro Settimanale"
 	      p $ do
-                "tutti i Mercoled&igrave; all'aula P2occupata "
+                "tutti i Mercoledì all'aula P2occupata "
 		"Cubo 40c UniCal, Rende (CS) alle circa meno "
 		"quasi 18:00"
               br
@@ -75,11 +83,12 @@ renderPage HumanHomePage = do
 	    div ! align "center" ! id "news" $ do
 	      h1 $ do
                 a ! href "cryptoparty.html" $ "!Cryptoparty!"
-              p "- Perche' in  paranoia stat virtus -"
+              p "- Perchè in  paranoia stat virtus -"
               p "Fu il 27-mar-13 @p2Occupata"
 	      h1 $ do
                 a ! href "warmup.html" $ "Warmup hackit 0x0E"
-              p "seminari e rassegna cinematografica <br/> in attesa dell'apocalisse del 2012"
+              p "seminari e rassegna cinematografica" 
+              p "in attesa dell'apocalisse del 2012"
     br
     br
     br
