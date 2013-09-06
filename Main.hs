@@ -12,6 +12,7 @@ import GHCJS.DOM.Text
 import GHCJS.DOM.Node
 import GHCJS.DOM.NodeList
 import GHCJS.DOM.Types
+import GHCJS.Foreign
 import Control.Applicative
 import Control.Monad
 import Data.Maybe
@@ -23,10 +24,12 @@ import Control.Monad.ListM
 import PageRender
 import Utils
 import DOMUtils
-import Framework hiding (renderPage, setupPage)
+import Framework hiding (renderPage, setupPage, routePage)
 import PageRender
 import PageActions
+import PageRouter
 
 main = do
-  let app = Application HomePage renderPage setupPage
+  Just win <- currentWindow
+  let app = Application HomePage renderPage setupPage routePage
   runApplication app

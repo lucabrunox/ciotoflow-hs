@@ -22,24 +22,15 @@ default (Data.Text.Text)
 
 type Step = F.Step Page
 
-toHumanHomePage :: Step -> JQuery -> Event -> IO ()
-toHumanHomePage s a e = s $ do
-  return HumanHomePage
-
 setupPage :: Step -> Page -> IO ()
-setupPage s HomePage = do
-  a <- select "a.human"
-  click (toHumanHomePage s a) def a
-  
-  return ()
-
 setupPage s HumanHomePage = do
   random <- select ".random"
   r <- mathRandom
-  let idx = floor (r * genericLength randomPhrases)
+  let idx = floor (r * genericLength randomPhrases :: Double)
       phrase = randomPhrases !! idx
   setHtml phrase random
   return ()
+setupPage _ _ = return ()
 
 randomPhrases :: [Text]
 randomPhrases = map (\x -> pack $ "Il ciotoflow è " ++ x) [

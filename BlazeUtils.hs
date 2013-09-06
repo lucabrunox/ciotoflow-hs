@@ -23,3 +23,6 @@ link = attribute "link" " link=\""
 
 wrap :: Html -> Html
 wrap = H.span ! A.style "white-space: pre-wrap"
+
+h :: Html -> Html
+h = Parent "h" "<h" "</h>"
