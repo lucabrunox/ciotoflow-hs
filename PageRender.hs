@@ -2,25 +2,28 @@
 
 module PageRender where
 
+import Control.Applicative
 import Prelude hiding (div, head, span, id)
+import qualified Prelude (id)
+import Data.List (intersperse)
 import Text.Blaze.Html4.Transitional hiding (map, style)
 import Text.Blaze.Html4.Transitional.Attributes hiding (title, span)
 import qualified Text.Blaze.Html4.Transitional as H
 import qualified Text.Blaze.Html4.Transitional.Attributes as A
 import BlazeUtils hiding (link)
 import qualified BlazeUtils as A
-import Data.Text hiding (head)
+import Data.Text (Text, pack)
 
 default (Data.Text.Text)
     
-data Page = HomePage | HumanHomePage | NerdHomePage | CryptoPartyPage | NotFoundPage
+data Page = HomePage | HumanHomePage | NerdHomePage | CryptoPartyPage (Maybe String) | NotFoundPage
  deriving (Show)
 
 pageUrl :: Page -> String
 pageUrl HomePage = "#"
 pageUrl HumanHomePage = "#human"
 pageUrl NerdHomePage = "#nerd"
-pageUrl CryptoPartyPage = "#cryptoparty"
+pageUrl (CryptoPartyPage hash) = maybe "#cryptoparty" (\x -> "#cryptoparty/"++x) hash
 
 url :: Page -> AttributeValue
 url = toValue . pageUrl
@@ -87,7 +90,7 @@ renderPage HumanHomePage = do
 	  td ! style "vertical-align: top;" ! width "30%" $ do
 	    div ! align "center" ! id "news" $ do
 	      h1 $ do
-                a ! href (url CryptoPartyPage) $ "!Cryptoparty!"
+                a ! href (url $ CryptoPartyPage Nothing) $ "!Cryptoparty!"
               p "- Perchè in  paranoia stat virtus -"
               p "Fu il 27-mar-13 @p2Occupata"
 	      h1 $ do
@@ -104,7 +107,8 @@ renderPage HumanHomePage = do
       a ! rel "Hacker Emblem" ! target "_new" ! href "http://www.catb.org/hacker-emblem/" $ do
 	img ! style "border-width:0" ! src "images/hacker.png"
 
-renderPage CryptoPartyPage = do
+renderPage (CryptoPartyPage Nothing) = renderPage $ CryptoPartyPage $ Just "cose"
+renderPage (CryptoPartyPage hash) = do
   head $ do
     commonHead
     link ! rel "stylesheet" ! type_ "text/css" ! href "css/cryptoblack.css"
@@ -117,77 +121,19 @@ renderPage CryptoPartyPage = do
     div ! class_ "titolo" $ ""
     div ! class_ "wrapper" $ do
       div ! class_ "sottomenu" $ "27 marzo 2013 Aula P2 Occupata - cubo 40c/unical"
-      div ! class_ "sottomenu" $ do
-        a ! id "mcose" ! href "#cose" ! class_ "clicked" $ "Cos'è"
-        a ! id "mprogramma" ! href "#programma" $ "Programma"
-        a ! id "mseminario" ! href "#seminario" $ "Seminario"
-        a ! id "mmusica" ! href "#musica" $ "Musica"
-        a ! id "minstallfest" ! href "#installfest" $ "Installfest/Banchetti"
-        a ! id "mlocandina" ! href "#locandina" $ "Locandina"
-        a ! id "mcontribuisci" ! href "#contribuisci" $ "Contribuisci"
-        a ! id "mmateriali" ! href "#materiali" $ "Materiali"
-      div ! class_ "paragrafi" ! id "cose" $ do
-        div "Vuoi che le tue email e chat private siano leggibili solo da te?"
-        div "Pensi che i tuoi dati personali debbano essere protetti da manomissioni e occhi indiscreti?"
-        div "Ti piacerebbe pubblicare e navigare in maniera totalmente anonima?..."
-        div "Allora impara a sfruttare a pieno gli strumenti per comunicare in modo sicuro, sfuggire a intercettazioni, censura e cifrare le tue \"coseprivate\"..."
-        div $ do
-          "Ma fallo durante una festa sperimentando e mettendoci le mani dentro! Il "
-          em "cryptoparty"
-          "non e' altro che una festa dove fra birra e musica imparerai a proteggere la tua privacy e i tuoi dati!"
-      div ! id "programma" ! class_ "paragrafi" $ do
-        div ! class_ "orario" $ "h18.00"
-        div "Seminario sull'autodifesa digitale"
-        div ! class_ "orario" $ "A seguire" 
-        div "Cena social"
-        div $ a ! href "#" $ "InstallFest"
-      div $ a ! href "#" $ "Autoproduzioni && controinformazione"
-      div ! class_ "orario" $ "h22.00"
-      div "Mad Monkey Sound Selection (musiche dal mondo - dall'Africa ai balcani)"
-      div "Djset NSA (Noize Spike Assault)"
-      div ! id "seminario" ! class_ "paragrafi" $ do 
-        h "seminario"
-      div $ do 
-        "Il seminario cercherà di dare le competenze"
-        "necessarie per utilizzare in modo semplice e indolore tutti gli"
-        "strumenti che ci permettano di cifrare/decifrare le mail e i dati sul nostro pc (" >> em "gpg/truecrypt" >> ")"
-        "navigare anonimamente nella rete (" >> em "tor" >> ")e poter chattare senza paura di"
-        "essere intercettati/letti (" >> em "otr" >> ")."
-      div ! id "musica" ! class_ "paragrafi" $ do
-        h "Musica" 
-        div ! class_ "orario" $ "h22.00"
-        div $ a ! href "https://www.facebook.com/italo.esposito.18" $ "Mad Monkey Sound Selection (musiche dal mondo - dall'Africa ai balcani)"
-      div "Djset NSA (Noize Spike Assault)"
-    
-      div ! id "installfest" ! class_ "paragrafi" $ do 
-        h "installfest/banchetti"
-        div $ do 
-          "A termine del seminario e durante la cena"
-          "sociale, " >> em "INSTALLFEST" >> ": se porti il tuo pc"
-          "estirpiamo winzozz e mettiamo linux.. ;) ! Tanti " >> em "BANCHETTI CRITTOGRAFICI" >> "dove potrai approfondire " 
-          "e sperimentare quello che hai scoperto durante il seminario, ma anche trovare " >> em "AUTOPRODUZIONI"
-          "e materiale di " >> em "CONTROINFORMAZIONE"
-      div ! id "locandina" ! class_ "paragrafi" $ do 
-        h "Locandina"
-        div $ do 
-          "Questa è la locandina preparata per l'evento, sentiti libero di " >> em "spammarla"
-          "con qualunque mezzo di cui tu disponga:"
-          div ! style "text-align: center; margin: 10px" $
-            a ! href "/data/crypt_A3.pdf" $ img ! alt "locandina" ! src "images/locandina_crypt_thumb.png"
-      div ! id "materiali" ! class_ "paragrafi" $ do 
-        h "Materiali"
-        div $ do
-          "Tada ecco le slide, poche parole tanti screenshot "
-          a ! href "data/slides.pdf" $ "qui"
-          "Qua invece il "
-          a ! href "https://cryptoparty.org/wiki/CryptoPartyHandbook" $ "libro guida del cryptoparty"
-          "(in inglese)"
-          "Spazia praticamente su tutti gli argomenti del seminario e non solo! Spread cryptography!"
-    div $ do
-      "Allora non fare il timido e raggiungici alla riunione"
-      "settimanale del ciotoflow, ogni mercoledì alle piu o meno circa 18:00 sempre in Aula"
-      "P2/occupata, oppure manda una mail in lista: "
-      a ! href "https://www.autistici.org/mailman/listinfo/ciotoflow" $ "ciotoflow [at] autistici [dot] org"
+      div ! class_ "sottomenu" $ sequence_ $ intersperse " "
+        (map (\(p, t) -> a ! href (url $ CryptoPartyPage $ Just p) ! class_ (if hash == Just p then "clicked" else "") $ t)
+         [
+           ("cose", "Cos'è"),
+           ("programma", "Programma"),
+           ("seminario", "Seminario"),
+           ("musica", "Musica"),
+           ("installfest", "Installfest/Banchetti"),
+           ("locandina", "Locandina"),
+           ("contribuisci", "Contribuisci"),
+           ("materiali", "Materiali")
+         ])
+      div ! class_ "paragrafi" $ renderCrypto hash
 
 renderPage NotFoundPage = do
   head $ do
@@ -200,3 +146,85 @@ renderPage NotFoundPage = do
       h1 $ do
         a ! href (url HomePage) ! style "color: #cccccc; text-decoration: none;" $ "CiotoFlow"
       h3 $ "*** Page not found! ***"
+
+-- Cryptoparty subpages
+
+renderCrypto :: Maybe String -> Html
+renderCrypto Nothing = renderCrypto' "cose"
+renderCrypto (Just x) = renderCrypto' x
+
+renderCrypto' :: String -> Html
+renderCrypto' "cose" = do
+  div "Vuoi che le tue email e chat private siano leggibili solo da te?"
+  div "Pensi che i tuoi dati personali debbano essere protetti da manomissioni e occhi indiscreti?"
+  div "Ti piacerebbe pubblicare e navigare in maniera totalmente anonima?..."
+  div "Allora impara a sfruttare a pieno gli strumenti per comunicare in modo sicuro, sfuggire a intercettazioni, censura e cifrare le tue \"coseprivate\"..."
+  div $ do
+    "Ma fallo durante una festa sperimentando e mettendoci le mani dentro! Il " >> em "cryptoparty" >> " "
+    "non e' altro che una festa dove fra birra e musica imparerai a proteggere la tua privacy e i tuoi dati!"
+
+renderCrypto' "materiali" = do
+  h "Materiali"
+  div $ do
+    "Tada ecco le slide, poche parole tanti screenshot "
+    a ! href "data/slides.pdf" $ "qui"
+    br
+    "Qua invece il "
+    a ! href "https://cryptoparty.org/wiki/CryptoPartyHandbook" $ "libro guida del cryptoparty"
+    " (in inglese) "
+    "Spazia praticamente su tutti gli argomenti del seminario e non solo! Spread cryptography!"
+    div $ do
+      "Allora non fare il timido e raggiungici alla riunione "
+      "settimanale del ciotoflow, ogni mercoledì alle piu o meno circa 18:00 sempre in Aula "
+      "P2/occupata, oppure manda una mail in lista: "
+      a ! href "https://www.autistici.org/mailman/listinfo/ciotoflow" $ "ciotoflow [at] autistici [dot] org"
+
+renderCrypto' "locandina" = do
+  h "Locandina"
+  div $ do 
+    "Questa è la locandina preparata per l'evento, sentiti libero di " >> em "spammarla" >> " "
+    "con qualunque mezzo di cui tu disponga:"
+    div ! style "text-align: center; margin: 10px" $
+      a ! href "data/crypt_A3.pdf" $ img ! alt "locandina" ! src "images/locandina_crypt_thumb.png"
+
+renderCrypto' "installfest" = do
+  h "installfest/banchetti"
+  div $ do 
+    "A termine del seminario e durante la cena "
+    "sociale, " >> em "INSTALLFEST" >> ": se porti il tuo pc "
+    "estirpiamo winzozz e mettiamo linux.. ;) ! Tanti " >> em "BANCHETTI CRITTOGRAFICI" >> " dove potrai approfondire " 
+    "e sperimentare quello che hai scoperto durante il seminario, ma anche trovare " >> em "AUTOPRODUZIONI "
+    "e materiale di " >> em "CONTROINFORMAZIONE"
+
+renderCrypto' "musica" = do
+  h "Musica" 
+  div ! class_ "orario" $ do
+    "h22.00"
+    div $ a ! href "https://www.facebook.com/italo.esposito.18" $ "Mad Monkey Sound Selection (musiche dal mondo - dall'Africa ai balcani)"
+    div "Djset NSA (Noize Spike Assault)"
+
+renderCrypto' "seminario" = do
+  h "seminario"
+  div $ do 
+    "Il seminario cercherà di dare le competenze "
+    "necessarie per utilizzare in modo semplice e indolore tutti gli "
+    "strumenti che ci permettano di cifrare/decifrare le mail e i dati sul nostro pc (" >> em "gpg/truecrypt" >> "), "
+    "navigare anonimamente nella rete (" >> em "tor" >> ") e poter chattare senza paura di "
+    "essere intercettati/letti (" >> em "otr" >> ")."
+
+renderCrypto' "programma" = do
+  div ! class_ "orario" $ do
+    "h18.00"
+    div "Seminario sull'autodifesa digitale"
+  div ! class_ "orario" $ do
+    "A seguire" 
+    div "Cena social"
+    div $ a ! href "#" $ "InstallFest"
+    div $ a ! href "#" $ "Autoproduzioni && controinformazione"
+  div ! class_ "orario" $ do
+    "h22.00"
+    div "Mad Monkey Sound Selection (musiche dal mondo - dall'Africa ai balcani)"
+    div "Djset NSA (Noize Spike Assault)"
+
+renderCrypto' "contribuisci" = do
+  div ""

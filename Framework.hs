@@ -21,7 +21,7 @@ import JSUtils
 import Control.Monad.ListM
 import Control.Concurrent.MVar
 import Network.URI
-import GHCJS.History
+-- import GHCJS.History
 import qualified JavaScript.JQuery as J
 import Data.Default
 import DOMUtils
@@ -67,7 +67,8 @@ runApplication app = do
   pageVar <- newMVar home
   let state = IntState app pageVar
   jwin <- J.selectObject (castRef $ unDOMWindow win)
-  historyAdapterBind win "anchorchange" (historyChanged state)
+  J.on (jqCb $ historyChanged state) (pack "hashchange") def jwin
+  -- historyAdapterBind win "anchorchange" (historyChanged state)
   let step = stepper state
   step $ loadDocumentURI state
 
